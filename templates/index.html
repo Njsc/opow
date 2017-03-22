@@ -2,18 +2,22 @@
 {% load staticfiles %}
 
 {% block show_photos %}
-    {% for photo in photos %}
-        <div class="col-md-6 col-sm-6">
-            <article class=" blog-teaser">
-                <header>
-                    <img src="{{ photo.img.url }}" alt="">
-                    <h3><a href="single.html">用一句话描述图片</a></h3>
-                    <span class="meta">20-8-2017, 姜宇</span>
-                    <hr>
-                </header>
+    <div class="row">
+        {% for photo in photos %}
+            <div class="col-md-6 col-sm-6">
+                <article class=" blog-teaser">
+                    <header>
+                        <img src="{{ photo.img_url.url }}" alt="" height="250" width="120">
+                        <h3><a href="{% url 'detail' %}?id={{ photo.id }}">{{ photo.desc }}</a></h3>
+                        <span class="meta">{{ photo.publish_date|date:'Y-m-d' }},By:{{ photo.user }}</span>
+                        <span>{% for tag in photo.tag.all %}{{ tag.name }}{% endfor %}</span>
+                        <hr>
+                    </header>
 
-            </article>
-        </div>
-    {% endfor %}
+                </article>
+            </div>
+        {% endfor %}
+    </div>
+    {% include 'pagination.html' %}
 {% endblock %}
-</html>
+

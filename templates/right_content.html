@@ -1,0 +1,41 @@
+ <aside class="col-md-4 blog-aside">
+
+                <div class="aside-widget">
+                    <header>
+                        <h3>热门图片</h3>
+                    </header>
+                    <div class="body">
+                        <ul class="clean-list">
+                            {% for hit in hit_list %}
+                                <li><a href="">{{ hit.desc }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="aside-widget">
+                    <header>
+                        <h3>最新图片</h3>
+                    </header>
+                    <div class="body">
+                        <ul class="clean-list">
+                            {% for latest in latest_list %}
+                            <li><a href="">{{ latest.desc }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="aside-widget">
+                    <header>
+                        <h3>标签</h3>
+                    </header>
+                    <div class="body clearfix">
+                        <ul class="tags">
+                            {% for cloud in cloud_list %}
+                                <li><a href="#">{{ cloud.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </aside>

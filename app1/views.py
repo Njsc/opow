@@ -11,8 +11,12 @@ from django.contrib.auth.decorators import login_required
 
 def global_setting(request):
     cloud_list = Tag.objects.all()[:12]
+    hit_list = Image.objects.all().order_by('-likes')[:6]
+    latest_list = Image.objects.all().order_by('-publish_date')[:6]
     return {
-        'cloud_list': cloud_list
+        'cloud_list': cloud_list,
+        'hit_list': hit_list,
+        'latest_list': latest_list,
     }
 
 
@@ -21,36 +25,45 @@ def add(request):
     if request.method == 'POST':
         form = ImgForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return render_to_response('publish_success.html', locals())
+            image = Image.objects.create(
+                name=form.cleaned_data['img_url'],
+                img_url=form.cleaned_data['img_url'],
+                desc=form.cleaned_data['desc'],
+                user=request.user
+            )
+            try:
+                form.save()
+            except:
+                pass
+            return render(request, 'publish_success.html', locals())
     else:
         form = ImgForm()
-    return render_to_response('publish.html', locals())
+    return render(request, 'publish.html', locals())
 
 
 def index(request):
     all_photos = Image.objects.all()
     photos = paging(request, all_photos)
-    return render_to_response('index.html', locals(), context_instance=RequestContext(request))
+    return render(request, 'index.html', locals())
 
 
 def detail(request):
-    img = request.GET.get('img', None)
-    photo = Image.objects.filter(img=img)
-    return render_to_response('detail.html', locals())
+    id = request.GET.get('id', None)
+    photos = Image.objects.filter(id=id)
+    return render(request, 'detail.html', locals())
 
 
 def about(request):
-    return render_to_response('about.html')
+    return render(request, 'about.html')
 
 
 def contact(request):
-    return render_to_response('contact.html')
+    return render(request, 'contact.html')
 
 
 # 分页
 def paging(request, photos):
-    paginator = Paginator(photos, 10)
+    paginator = Paginator(photos, 8)
     try:
         page = int(request.GET.get('page', 1))
         photos = paginator.page(page)
@@ -73,7 +86,7 @@ def do_register(request):
             return render(request, 'register_success.html')
     else:
         form = RegisterForm()
-        return render_to_response('register.html', locals())
+        return render(request, 'register.html', locals())
 
 
 def do_login(request):
@@ -90,7 +103,7 @@ def do_login(request):
                 return redirect(do_login)
     else:
         form = LoginForm()
-        return render_to_response('login.html', locals())
+        return render(request, 'login.html', locals())
 
 
 def do_logout(request):
