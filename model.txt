@@ -1,0 +1,24 @@
+User:
+    username    用户名
+    sex         性别
+    email       邮箱
+    phone       联系方式
+
+Image:
+    name     图片名称
+    ImgUrl      图片路径
+    (User)      用户
+    publish_date发布时间
+    (Tag)         标签
+    likes       喜欢数
+    count       浏览量
+    desc        图片描述
+
+
+Comment:
+    comment_text评论正文
+    comment_date评论时间
+    (User)      用户
+    (Img)       图片
+Tag:
+    name     标签名

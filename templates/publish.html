@@ -1,0 +1,23 @@
+{% extends 'base_1.html' %}
+{% block url_lab %}
+    <a href="{% url 'add' %}">发表</a>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 clean-superblock" id="contact">
+                <h2>发表</h2>
+                <form action="" method="post" accept-charset="utf-8" class="contact-form" enctype="multipart/form-data">
+                    {#                        <input type="text" name="name" id="contact-name" placeholder="Name" class="form-control input-lg">#}
+                    <input type="file" name="img_url" id="contact-file" placeholder="照片">
+                    <textarea rows="5" name="desc" id="contact-body" placeholder="描述"
+                              class="form-control input-lg"></textarea>
+                    <div class="buttons clearfix">
+                        <button type="submit" class="btn btn-xlarge btn-clean-one">发表</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block show_photos %}
+    {% for photo in photos %}
+        <div class="col-md-6 col-sm-6">
+            <article class=" blog-teaser">
+                <header>
+                    <img src="{{ photo.img.url }}" alt="">
+                    <h3><a href="single.html">用一句话描述图片</a></h3>
+                    <span class="meta">20-8-2017, 姜宇</span>
+                    <hr>
+                </header>
+
+            </article>
+        </div>
+    {% endfor %}
+{% endblock %}
+</html>

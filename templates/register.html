@@ -1,0 +1,29 @@
+{% extends 'base_1.html' %}
+{% block url_lab %}
+    <a href="{% url 'register' %}">注册</a>
+{% endblock %}
+{% block content %}
+    <div class="container about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 clean-superblock" id="contact">
+                    <h2>注册</h2>
+
+                    <form action="{% url 'register' %}" method="POST" accept-charset="utf-8" class="contact-form">
+                        <input type="text" name="username" id="contact-name" placeholder="用户名"
+                               class="form-control input-lg">
+                        <input type="password" name="password" id="contact-password" placeholder="密码"
+                               class="form-control input-lg">
+                        <input type="email" name="email" id="contact-email" placeholder="邮箱"
+                               class="form-control input-lg">
+                        <input type="tel" name="mobile" id="contact-tel" placeholder="手机"
+                               class="form-control input-lg">
+                        <div class="buttons clearfix">
+                            <button type="submit" class="btn btn-xlarge btn-clean-one">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

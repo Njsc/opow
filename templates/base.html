@@ -1,0 +1,219 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}">
+
+    <!-- Google Webfonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600|PT+Serif:400,400italic' rel='stylesheet'
+          type='text/css'>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" id="theme-styles">
+
+    <!--[if lt IE 9]>
+        <script src="js/respond.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<header>
+    <div class="widewrapper masthead">
+        <div class="container">
+            <a href="index.html" id="logo">
+                <img src="{% static 'img/logo.png' %}" alt="One Pic One Word">
+            </a>
+
+            <div id="mobile-nav-toggle" class="pull-right">
+                <a href="#" data-toggle="collapse" data-target=".clean-nav .navbar-collapse">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+            <nav class="pull-right clean-nav">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav nav-pills navbar-nav">
+
+                        <li>
+                            <a href="{% url 'index' %}">首页</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'logout' %}">注销</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'login' %}">登录</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'register' %}">注册</a>
+                            </li>
+
+                        {% endif %}
+                        <li>
+                            <a href="{% url 'add' %}">发表</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'about' %}">关于</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contact' %}">联系</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="widewrapper subheader">
+        <div class="container">
+            <div class="clean-breadcrumb">
+                <a href="#">一图一话</a>
+                {% if user.is_authenticated %}
+                    欢迎:{{ user.username }}
+                {% else %}
+                {% endif %}
+            </div>
+            <div class="clean-searchbox">
+                <form action="#" method="get" accept-charset="utf-8">
+
+                    <input class="searchfield" id="searchbox" type="text" placeholder="Search">
+                    <button class="searchbutton" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="widewrapper main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <div class="row">
+                    {% block show_photos %}{% endblock %}
+                </div>
+
+                <div class="copyrights">Collect from <a href="http://www.cssmoban.com/" title="网站模板">网站模板</a></div>
+
+                <div id="pagination-clean">
+                    {% if photos.has_previous %}
+                        <a href="?page={{ photos.previous_page_number }}" class="previous">&laquo;前一页</a>
+                    {% else %}
+                        <li class="previous-off">&laquo;前一页</li>
+                    {% endif %}
+                    {% if photos.has_next %}
+                        <a href="?page={{ photos.next_page_number }}" class="previous">下一页&raquo;</a>
+                    {% else %}
+                        <li class="previous-off">下一页&raquo;</li>
+                    {% endif %}
+
+                </div>
+            </div>
+            <aside class="col-md-4 blog-aside">
+
+                <div class="aside-widget">
+                    <header>
+                        <h3>热门图片</h3>
+                    </header>
+                    <div class="body">
+                        <ul class="clean-list">
+                            <li><a href="">Clean - Responsive HTML5 Template</a></li>
+                            <li><a href="">Responsive Pricing Table</a></li>
+                            <li><a href="">Yellow HTML5 Template</a></li>
+                            <li><a href="">Blackor Responsive Theme</a></li>
+                            <li><a href="">Portfolio Bootstrap Template</a></li>
+                            <li><a href="">Clean Slider Template</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="aside-widget">
+                    <header>
+                        <h3>最新图片</h3>
+                    </header>
+                    <div class="body">
+                        <ul class="clean-list">
+                            <li><a href="">Blackor Responsive Theme</a></li>
+                            <li><a href="">Portfolio Bootstrap Template</a></li>
+                            <li><a href="">Clean Slider Template</a></li>
+                            <li><a href="">Clean - Responsive HTML5 Template</a></li>
+                            <li><a href="">Responsive Pricing Table</a></li>
+                            <li><a href="">Yellow HTML5 Template</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="aside-widget">
+                    <header>
+                        <h3>标签</h3>
+                    </header>
+                    <div class="body clearfix">
+                        <ul class="tags">
+                            {% for cloud in cloud_list %}
+                                <li><a href="#">{{ cloud.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="widewrapper footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footer-widget">
+                    <h3><i class="fa fa-user"></i>关于</h3>
+                    <p>首先欢迎你访问一照一话</p>
+                    <p>一照一话可以为用户展示一张照片配一句话,让你们朋友能够知道你最近在做什么.或者你发现有趣的事也可以发出来分享给大家</p>
+                    <p>已完成功能:上传图片,浏览图片,分页功能</p>
+                    <p>未完成功能:标签分类,热门照片,最新照片,是否喜欢,喜欢数...</p>
+                </div>
+
+                <div class="col-md-4 footer-widget">
+                    <h3><i class="fa fa-pencil"></i>最新照片</h3>
+                    <ul class="clean-list">
+                        <li><a href="">可爱美女极致诱惑</a></li>
+                        <li><a href="">大自然的风景</a></li>
+                        <li><a href="">社会百态,点赞点赞</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 footer-widget">
+                    <h3><i class="fa fa-envelope"></i>联系我</h3>
+
+                    <p>如果你有什么问题可以联系我哦</p>
+                    {#                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil fugiat, cupiditate veritatis#}
+                    {#                            excepturi tempore explicabo.</p>#}
+                    <div class="footer-widget-icon">
+                        <i class="fa fa-facebook"></i><i class="fa fa-twitter"></i><i class="fa fa-google"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="widewrapper copyright">
+        Copyright 2017 . More Happiness <a href="#" target="_blank" title="一照一话">一照一话</a> -
+        Collect from <a href="#" title="一照一话" target="_blank">一照一话</a>
+    </div>
+</footer>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.js"></script>
+
+</body>
+</html>
