@@ -1,10 +1,9 @@
 # encoding:utf8
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render_to_response, redirect, HttpResponseRedirect, render
-from django.template import RequestContext
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
-from models import Image, User, Tag
-from forms import ImgForm, RegisterForm, LoginForm
+from models import Image, User, Tag, Comment
+from forms import ImgForm, RegisterForm, LoginForm, CommentForm
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 
@@ -48,9 +47,23 @@ def index(request):
 
 
 def detail(request):
-    id = request.GET.get('id', None)
-    photos = Image.objects.filter(id=id)
-    return render(request, 'detail.html', locals())
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment.objects.create(
+                comment_text=form.cleaned_data['comment_text'],
+                user=request.user,
+                img=Image(str(request.META['HTTP_REFERER']).split('=')[1])
+            )
+            comment.save()
+            return redirect(request.META['HTTP_REFERER'])
+
+    else:
+        form = Comment()
+        id = request.GET.get('id', None)
+        photos = Image.objects.filter(id=id)
+        comments = Comment.objects.filter(img=id)
+        return render(request, 'detail.html', locals())
 
 
 def about(request):
@@ -84,6 +97,9 @@ def do_register(request):
             )
             user.save()
             return render(request, 'register_success.html')
+        else:
+            errors = "注册信息有误,请确认"
+            return render(request, 'register.html', locals())
     else:
         form = RegisterForm()
         return render(request, 'register.html', locals())
@@ -101,6 +117,9 @@ def do_login(request):
                 return redirect(index)
             else:
                 return redirect(do_login)
+        else:
+            errors = '用户名或密码错误'
+            return render(request, 'login.html', locals())
     else:
         form = LoginForm()
         return render(request, 'login.html', locals())
@@ -109,3 +128,11 @@ def do_login(request):
 def do_logout(request):
     logout(request)
     return redirect(index)
+
+
+def list(request):
+    tag = request.GET.get('tag', None)
+    tag_id = Tag.objects.values('id').filter(name=tag)
+    images = Image.objects.filter(tag=tag_id)
+    photos = paging(request, images)
+    return render(request, 'index.html', locals())

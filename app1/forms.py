@@ -1,6 +1,6 @@
 # encoding:utf-8
 from django import forms
-from models import Image, User
+from models import Image, User, Comment
 
 
 class ImgForm(forms.ModelForm):
@@ -20,3 +20,9 @@ class LoginForm(forms.Form):
                                max_length=50, error_messages={"required": '用户名不能为空',})
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'required': 'required',}),
                                max_length=20, error_messages={"required": '密码不能为空',})
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('comment_text',)

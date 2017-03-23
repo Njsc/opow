@@ -10,6 +10,9 @@
                     <h2>注册</h2>
 
                     <form action="{% url 'register' %}" method="POST" accept-charset="utf-8" class="contact-form">
+                        {% if errors %}
+                            <p style="color: red" c>{{ errors }}</p>
+                        {% endif %}
                         <input type="text" name="username" id="contact-name" placeholder="用户名"
                                class="form-control input-lg">
                         <input type="password" name="password" id="contact-password" placeholder="密码"
